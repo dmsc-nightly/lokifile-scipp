@@ -50,6 +50,7 @@ jobs:
       - run: conan config set general.revisions_enabled=True
       - run: mkdir _build
       - run: cd _build
+      - run: mkdir -p ~/.conan/profiles
       - run: cat ../../conan-default-settings.txt > ~/.conan/profiles/default
       - run: conan install .. --build=missing
 
