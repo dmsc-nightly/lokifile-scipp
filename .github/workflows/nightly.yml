@@ -14,6 +14,9 @@ jobs:
   filewritersetup:
     name: Set up the file write, EFU and Kafka broker
     runs-on: ubuntu-20.04
+    defaults:
+      run:
+        shell: bash -l {0}  # required for conda env
     steps:
 
       - uses: actions/checkout@v3
