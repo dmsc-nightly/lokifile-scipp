@@ -49,5 +49,5 @@ jobs:
       - run: conan config install http://github.com/ess-dmsc/conan-configuration.git
       - run: mkdir _build
       - run: cd _build
-      - run: conan install .. --build=missing -s compiler=x86_64-conda-linux-gnu-cc -s compiler.version=11 -s compiler.libcxx=libstdc++11
+      - run: conan install .. --build=missing -s compiler=gcc -s compiler.version=11 -s compiler.libcxx=libstdc++11
 
