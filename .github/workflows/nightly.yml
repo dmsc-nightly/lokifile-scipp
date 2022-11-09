@@ -32,8 +32,8 @@ jobs:
       - name: Cache conan setup
         id: conan-cache-key
         run: |
-          echo "{key}={$(/bin/date -u "+%Y%m%d")}" >> $GITHUB_OUTPUT
-          echo "{path}={$(conan config home)}" >> $GITHUB_OUTPUT
+          echo "::set-output name=key::$(/bin/date -u "+%Y%m%d")"
+          echo "::set-output name=path::$(conan config home)"
 
       - name: Cache conan
         uses: actions/cache@v1
