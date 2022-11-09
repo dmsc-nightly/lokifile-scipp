@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: BSD-3-Clause
+# Copyright (c) 2022 Scipp contributors (https://github.com/scipp)
+
+name: environment
+channels:
+  - conda-forge
+dependencies:
+  - cmake=3.23.2
+  - conan=1.53.1
+  - gxx_linux-64=11.1.*
+  - ninja=1.11.0
