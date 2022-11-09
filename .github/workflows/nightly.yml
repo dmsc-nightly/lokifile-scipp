@@ -16,11 +16,13 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
 
+      - uses: actions/checkout@v3
+
       - name: Setup conda environment
         uses: mamba-org/provision-with-micromamba@main
         with:
           micromamba-version: 0.23.0
-          environment-file: ./environment.yml
+          environment-file: environment.yml
           cache-env: true
           extra-specs: python=3.8
 
