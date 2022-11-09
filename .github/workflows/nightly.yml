@@ -41,6 +41,8 @@ jobs:
           path: ${{ steps.conan-cache-key.outputs.path }}
           key: conan-${{ steps.conan-cache-key.outputs.key }}
 
+      - run: export TEST_ROOT_DIRECTORY=$(pwd)
+      - run: ls -a
       - run: git clone https://github.com/ess-dmsc/kafka-to-nexus.git
       - run: cd kafka-to-nexus/
       # - run: conan config set settings.compiler=x86_64-conda-linux-gnu-cc
