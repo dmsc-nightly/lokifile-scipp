@@ -1,6 +1,6 @@
 #!/bin/bash
 
-git clone git@github.com:ess-dmsc/kafka-to-nexus.git
+git clone https://github.com/ess-dmsc/kafka-to-nexus.git
 cd kafka-to-nexus/
 conan config install http://github.com/ess-dmsc/conan-configuration.git
 mkdir _build
