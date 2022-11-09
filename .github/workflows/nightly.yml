@@ -41,4 +41,13 @@ jobs:
           path: ${{ steps.conan-cache-key.outputs.path }}
           key: conan-${{ steps.conan-cache-key.outputs.key }}
 
-      - run: bash ./setup.sh
+      - run: git clone https://github.com/ess-dmsc/kafka-to-nexus.git
+      - run: cd kafka-to-nexus/
+      # - run: conan config set settings.compiler=gcc
+      # - run: conan config set settings.compiler.libcxx=libstdc++11
+      # - run: conan config set settings.compiler.version=11
+      - run: conan config -s compiler='x86_64-conda-linux-gnu-cc' -s compiler.libcxx='libstdc++11' -s compiler.version='11' install http://github.com/ess-dmsc/conan-configuration.git
+      - run: mkdir _build
+      - run: cd _build
+      - run: conan install .. --build=missing
+
