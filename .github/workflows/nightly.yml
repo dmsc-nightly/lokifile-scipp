@@ -52,5 +52,12 @@ jobs:
           mkdir _build
           cd _build
           # Try to build failing package manually for debugging
-          conan install --build missing graylog-logger/2.1.4@ess-dmsc/stable
-          conan install .. --build=missing
+          git clone https://github.com/ess-dmsc/graylog-logger.git
+          cd graylog-logger
+          mkdir _build
+          cd _build
+          cmake ..
+          make -j4
+          make -j4 unit_tests
+          ./unit_tests/unit_tests 
+          #conan install .. --build=missing
