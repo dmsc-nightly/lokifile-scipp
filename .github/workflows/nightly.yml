@@ -46,11 +46,11 @@ jobs:
           cp ${GITHUB_WORKSPACE}/conan-default-settings.txt ~/.conan/profiles/default
       - run: git clone https://github.com/ess-dmsc/kafka-to-nexus.git
       - run: |
-          # Try to build failing package manually for debugging
-          conan install --build missing graylog-logger/2.1.4@ess-dmsc/stable
           cd kafka-to-nexus/
           conan config install http://github.com/ess-dmsc/conan-configuration.git
           conan config set general.revisions_enabled=True
           mkdir _build
           cd _build
+          # Try to build failing package manually for debugging
+          conan install --build missing graylog-logger/2.1.4@ess-dmsc/stable
           conan install .. --build=missing
