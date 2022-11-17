@@ -54,3 +54,12 @@ jobs:
           mkdir _build
           cd _build
           conan install .. --build=missing
+
+      - run: |
+          git clone https://github.com/ess-dmsc/event-formation-unit.git
+          cd event-formation-unit
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release ..
+          make -j2 all unit_tests
+          make -j2 runtest
