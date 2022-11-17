@@ -49,8 +49,12 @@ jobs:
           cd kafka-to-nexus/
           conan config install http://github.com/ess-dmsc/conan-configuration.git
           conan config set general.revisions_enabled=True
+          echo "BEFORE"
+          cat conanfile.txt
           # Replace version of Conan package to disable failing unit test temporarily
           sed -i 's|graylog-logger/2.1.4@ess-dmsc/stable|graylog-logger/2.1.4-1@ess-dmsc/stable|' conanfile.txt
+          echo "AFTER"
+          cat conanfile.txt
           mkdir _build
           cd _build
           conan install .. --build=missing
