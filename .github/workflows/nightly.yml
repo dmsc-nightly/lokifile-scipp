@@ -1,0 +1,69 @@
+# SPDX-License-Identifier: BSD-3-Clause
+# Copyright (c) 2022 Scipp contributors (https://github.com/scipp)
+
+name: nightly
+
+on:
+  push:
+    branches:
+      - main
+      - release
+  pull_request:
+
+jobs:
+  filewritersetup:
+    name: Set up the file write, EFU and Kafka broker
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        shell: bash -l {0}  # required for conda env
+    steps:
+
+      - uses: actions/checkout@v3
+
+      - name: Setup conda environment
+        uses: mamba-org/provision-with-micromamba@main
+        with:
+          micromamba-version: 0.23.0
+          environment-file: environment.yml
+          cache-env: false
+          extra-specs: python=3.8
+
+      # - name: Cache conan setup
+      #   id: conan-cache-key
+      #   run: |
+      #     echo "::set-output name=key::$(/bin/date -u "+%Y%m%d")"
+      #     echo "::set-output name=path::$(conan config home)"
+
+      # - name: Cache conan
+      #   uses: actions/cache@v1
+      #   with:
+      #     path: ${{ steps.conan-cache-key.outputs.path }}
+      #     key: conan-${{ steps.conan-cache-key.outputs.key }}
+
+      - run: |
+          mkdir -p ~/.conan/profiles
+          cp ${GITHUB_WORKSPACE}/conan-default-settings.txt ~/.conan/profiles/default
+      - run: git clone https://github.com/ess-dmsc/kafka-to-nexus.git
+      - run: |
+          cd kafka-to-nexus/
+          conan config install http://github.com/ess-dmsc/conan-configuration.git
+          conan config set general.revisions_enabled=True
+          echo "BEFORE"
+          cat conanfile.txt
+          # Replace version of Conan package to disable failing unit test temporarily
+          sed -i 's|graylog-logger/2.1.4@ess-dmsc/stable|graylog-logger/2.1.4-1@ess-dmsc/stable|' conanfile.txt
+          echo "AFTER"
+          cat conanfile.txt
+          mkdir _build
+          cd _build
+          conan install .. --build=missing
+
+      - run: |
+          git clone https://github.com/ess-dmsc/event-formation-unit.git
+          cd event-formation-unit
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release ..
+          make -j2 all unit_tests
+          make -j2 runtest
